@@ -43,11 +43,11 @@ bool init(const char* apiKey)
         return false;
     }
 #ifdef _WIN32
-    strcat_s(header, size, "X-APIKEY: ");
-    strcat_s(header, size, apiKey);
+    strcpy_s(header, size, "X-APIKEY: ");
+    strcpy_s(header, size, apiKey);
 #else
-    strcat(header, "X-APIKEY: ");
-    strcat(header, apiKey);
+    strcpy(header, "X-APIKEY: ");
+    strcpy(header, apiKey);
 #endif
     m_authHeader = curl_slist_append(m_authHeader, header);
     return true;
