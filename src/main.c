@@ -1,4 +1,1 @@
-int main(void)
-{
-    return 0;
-}
+#include "channel.h"
