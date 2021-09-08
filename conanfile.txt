@@ -2,5 +2,8 @@
 libcurl/7.78.0
 cjson/1.7.15
 
+[options]
+openssl:shared=True
+
 [generators]
 cmake
