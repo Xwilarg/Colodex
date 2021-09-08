@@ -15,4 +15,4 @@ add_library(${PROJECT_NAME} ${SRCS})
 target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
 
 add_executable(ColodexTest test/test.c)
-target_link_libraries(ColodexTest)
+target_link_libraries(ColodexTest ${CONAN_LIBS} ${PROJECT_NAME})
