@@ -1,6 +1,5 @@
-
 #include <stdbool.h>
-#include "colodex/client.h"
+#include "client.h"
 
 static struct curl_slist *m_authHeader = NULL;
 
@@ -35,8 +34,8 @@ bool init(const char* apiKey)
     m_authHeader = NULL; // In case we are calling the function twice
 
     // Set header
-    size_t size = 11 + strlen(apiKey);
-    char* header = malloc(size); // 11 is sizeof "X-APIKEY: " + 1 for \0
+    size_t size = 10 + strlen(apiKey);
+    char* header = malloc(size); // 10 is sizeof "X-APIKEY: "
     if (header == NULL)
     {
         fprintf(stderr, "Could not call malloc, out of memory");
@@ -70,7 +69,7 @@ char* request(const char* url)
     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, cb);
     curl_easy_setopt(handle, CURLOPT_WRITEDATA, (void*)&chunk);
 
-    curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 0L); // Fix issues with if user doesn't have local certificate
+    curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 0L); // Fix issues with local certificate
 
     CURLcode code = curl_easy_perform(handle);
     if (code != CURLE_OK)

@@ -27,3 +27,5 @@ typedef struct channel {
     bool        inactive;
     char*       description;
 } channel;
+
+channel* get_channel(const char* channel_id);

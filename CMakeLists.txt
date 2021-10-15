@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.12)
 project(Colodex)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -10,7 +10,7 @@ else()
     SET(CMAKE_C_FLAGS "-Wall -Wextra -L.")
 endif()
 file(GLOB_RECURSE SRCS "src/*.c")
-include_directories(inc)
+include_directories(inc/colodex)
 add_library(${PROJECT_NAME} ${SRCS})
 target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
 
