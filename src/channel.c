@@ -50,7 +50,7 @@ channel* colodex_get_channel(const char* channelId)
     ch->twitter = parseString(json, "twitter");
     ch->inactive = parseBool(json, "inactive");
     ch->createdAt = parseDateTime(json, "created_at");
-    // TODO: topTopics
+    ch->topTopics = parseStringArray(json, "top_topics");
 
     cJSON_Delete(json);
 
@@ -71,5 +71,10 @@ void colodex_free_channel(channel* ch)
     free(ch->lang);
     free(ch->ytUploadsId);
     free(ch->twitter);
+    for (int i = 0; ch->topTopics[i] != NULL; i++)
+    {
+        free(ch->topTopics[i]);
+    }
+    free(ch->topTopics);
     free(ch);
 }
