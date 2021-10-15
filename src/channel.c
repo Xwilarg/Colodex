@@ -1,4 +1,6 @@
 #include <cjson/cJSON.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "channel.h"
 #include "client.h"

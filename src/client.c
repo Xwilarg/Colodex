@@ -1,4 +1,7 @@
 #include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "client.h"
 
 static struct curl_slist *m_authHeader = NULL;
