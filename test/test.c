@@ -25,7 +25,7 @@ int main()
         return 1;
     }
 #endif
-    init(token);
+    init_colodex(token);
     channel* ch = get_channel("UCsUj0dszADCGbF3gNrQEuSQ");
     assert(strcmp(ch->id, "UCsUj0dszADCGbF3gNrQEuSQ") == 0);
     assert(strcmp(ch->name, "Tsukumo Sana Ch. hololive-EN") == 0);
@@ -39,5 +39,6 @@ int main()
 #ifdef _WIN32
     free(token); // getenv() shouldn't be freed
 #endif
+    free_colodex();
     printf("OK\n");
 }
