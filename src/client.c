@@ -70,6 +70,8 @@ char* request(const char* url)
     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, cb);
     curl_easy_setopt(handle, CURLOPT_WRITEDATA, (void*)&chunk);
 
+    curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 0L); // Fix issues with if user doesn't have local certificate
+
     CURLcode code = curl_easy_perform(handle);
     if (code != CURLE_OK)
     {
