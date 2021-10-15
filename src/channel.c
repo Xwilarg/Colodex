@@ -18,7 +18,9 @@ channel* get_channel(const char* channelId)
         return NULL;
     }
     snprintf(url, size, "%s%s", baseUrl, channelId);
-    cJSON* json = cJSON_Parse(request(url));
+    char* resp = request(url);
+    cJSON* json = cJSON_Parse(resp);
+    free(resp);
     free(url);
 
     channel* ch;
