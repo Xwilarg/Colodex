@@ -32,7 +32,7 @@ jobs:
       working-directory: ./build
       run: cmake --build .
     - name: fix executable name
-      run: cp ./build/bin/ColodexTest* ./ColodexTest.exe
+      run: cp ./build/bin/ColodexTest.exe ./ColodexTest.exe || cp ./build/bin/ColodexTest* ./ColodexTest.exe
     - name: run tests
       env:
         HOLODEX_TOKEN: ${{ secrets.HOLODEX_TOKEN }}
