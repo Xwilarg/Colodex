@@ -1,3 +1,5 @@
+#define _XOPEN_SOURCE
+
 #include <cjson/cJSON.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,7 +50,25 @@ channel* get_channel(const char* channelId)
     ch->viewCount = cJSON_GetObjectItemCaseSensitive(json, "view_count")->valueint;
     ch->clipCount = cJSON_GetObjectItemCaseSensitive(json, "clip_count")->valueint;
     ch->lang = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "lang")->valuestring);
-    // TODO: published_at
+
+    struct tm time;
+    char* timeStr = cJSON_GetObjectItemCaseSensitive(json, "published_at")->valuestring;
+#ifdef _WIN32
+    sscanf_s(timeStr, "%d-%d-%dT%d:%d:%d",
+        &time.tm_year,
+        &time.tm_mon,
+        &time.tm_mday,
+        &time.tm_hour,
+        &time.tm_min,
+        &time.tm_sec
+    );
+    time.tm_year -= 1900;
+    time.tm_mon--;
+#else
+    strptime(timeStr, "%Y-%m-%dT%H:%M:%S", &time);
+#endif
+    ch->publishedAt = mktime(&time);
+
     ch->inactive = cJSON_IsTrue(cJSON_GetObjectItemCaseSensitive(json, "inactive"));
     ch->description = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "description")->valuestring);
 
