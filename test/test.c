@@ -27,5 +27,7 @@ int main()
     channel* ch = get_channel("UCUKD-uaobj9jiqB-VXt71mA");
     printf("%s\n", ch->id);
     free(ch);
-    free(token);
+#ifdef _WIN32
+    free(token); // getenv() shouldn't be freed
+#endif
 }
