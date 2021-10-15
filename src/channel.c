@@ -19,6 +19,7 @@ channel* get_channel(const char* channelId)
     }
     snprintf(url, size, "%s%s", baseUrl, channelId);
     cJSON* json = cJSON_Parse(request(url));
+    free(url);
 
     channel* ch;
     ch = malloc(sizeof(channel));
@@ -52,6 +53,7 @@ channel* get_channel(const char* channelId)
     ch->lang = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "lang")->valuestring);
 
     struct tm time;
+    memset(&time, 0, sizeof(struct tm));
     char* timeStr = cJSON_GetObjectItemCaseSensitive(json, "published_at")->valuestring;
 #ifdef _WIN32
     sscanf_s(timeStr, "%d-%d-%dT%d:%d:%d",
@@ -75,4 +77,19 @@ channel* get_channel(const char* channelId)
     cJSON_Delete(json);
 
     return ch;
+}
+
+void free_channel(channel* ch)
+{
+    free(ch->id);
+    free(ch->name);
+    free(ch->englishName);
+    free(ch->org);
+    free(ch->suborg);
+    free(ch->photo);
+    free(ch->banner);
+    free(ch->twitter);
+    free(ch->lang);
+    free(ch->description);
+    free(ch);
 }

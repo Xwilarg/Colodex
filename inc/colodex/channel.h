@@ -29,3 +29,4 @@ typedef struct channel {
 } channel;
 
 channel* get_channel(const char* channelId);
+void free_channel(channel* ch);

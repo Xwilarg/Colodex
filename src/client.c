@@ -46,6 +46,7 @@ bool init(const char* apiKey)
     }
     snprintf(header, size, "%s%s", "X-APIKEY: ", apiKey);
     m_authHeader = curl_slist_append(m_authHeader, header);
+    free(header);
     return true;
 }
 
@@ -69,6 +70,7 @@ char* request(const char* url)
     curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 0L); // Fix issues with local certificate
 
     CURLcode code = curl_easy_perform(handle);
+    curl_easy_cleanup(handle);
     if (code != CURLE_OK)
     {
         fprintf(stderr, "An error happened while processing the request: %s\n", curl_easy_strerror(code));

@@ -35,7 +35,7 @@ int main()
     assert(strcmp(ch->suborg, "i English (Council)") == 0);
     assert(strcmp(ch->twitter, "tsukumosana") == 0);
     assert(ch->inactive == false);
-    free(ch);
+    free_channel(ch);
 #ifdef _WIN32
     free(token); // getenv() shouldn't be freed
 #endif
