@@ -41,13 +41,7 @@ bool init(const char* apiKey)
         fprintf(stderr, "Could not call malloc, out of memory");
         return false;
     }
-#ifdef _WIN32
-    strcpy_s(header, size, "X-APIKEY: ");
-    strcat_s(header, size, apiKey);
-#else
-    strcpy(header, "X-APIKEY: ");
-    strcat(header, apiKey);
-#endif
+    snprintf(header, size, "%s%s", "X-APIKEY: ", apiKey);
     m_authHeader = curl_slist_append(m_authHeader, header);
     return true;
 }

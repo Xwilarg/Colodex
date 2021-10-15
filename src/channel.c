@@ -4,22 +4,16 @@
 #include "client.h"
 #include "utils.h"
 
-channel* get_channel(const char* channel_id)
+channel* get_channel(const char* channelId)
 {
     char* baseUrl = "https://holodex.net/api/v2/channels/";
-    int size = strlen(baseUrl) + strlen(channel_id) + 1;
+    int size = strlen(baseUrl) + strlen(channelId) + 1;
     char* url = malloc(size);
     if (url == NULL)
     {
         return NULL;
     }
-#ifdef _WIN32
-    strcpy_s(url, size, baseUrl);
-    strcat_s(url, size, channel_id);
-#else
-    strcpy(url, size, baseUrl);
-    strcat(url, channel_id);
-#endif
+    snprintf(url, size, "%s%s", baseUrl, channelId);
     cJSON* json = cJSON_Parse(request(url));
 
     channel* ch;

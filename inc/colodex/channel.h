@@ -28,4 +28,4 @@ typedef struct channel {
     char*       description;
 } channel;
 
-channel* get_channel(const char* channel_id);
+channel* get_channel(const char* channelId);
