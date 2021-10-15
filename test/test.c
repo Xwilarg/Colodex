@@ -1,6 +1,8 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 #include "channel.h"
 #include "client.h"
 
@@ -32,7 +34,7 @@ int main()
     assert(strcmp(ch->org, "Hololive") == 0);
     assert(strcmp(ch->suborg, "i English (Council)") == 0);
     assert(strcmp(ch->twitter, "tsukumosana") == 0);
-    assert(ch->inactive == FALSE);
+    assert(ch->inactive == false);
     free(ch);
 #ifdef _WIN32
     free(token); // getenv() shouldn't be freed
