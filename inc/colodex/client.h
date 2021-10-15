@@ -3,6 +3,6 @@
 #include <curl/curl.h>
 #include <stdbool.h>
 
-bool init_colodex(const char* apiKey);
-void free_colodex(void);
+bool colodex_init(const char* apiKey);
+void colodex_free(void);
 char* request(const char* url);

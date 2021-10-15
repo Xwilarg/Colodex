@@ -8,7 +8,7 @@
 #include "client.h"
 #include "utils.h"
 
-channel* get_channel(const char* channelId)
+channel* colodex_get_channel(const char* channelId)
 {
     char* baseUrl = "https://holodex.net/api/v2/channels/";
     size_t size = strlen(baseUrl) + strlen(channelId) + 1;
@@ -81,7 +81,7 @@ channel* get_channel(const char* channelId)
     return ch;
 }
 
-void free_channel(channel* ch)
+void colodex_free_channel(channel* ch)
 {
     free(ch->id);
     free(ch->name);

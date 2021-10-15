@@ -25,8 +25,8 @@ int main()
         return 1;
     }
 #endif
-    init_colodex(token);
-    channel* ch = get_channel("UCsUj0dszADCGbF3gNrQEuSQ");
+    colodex_init(token);
+    channel* ch = colodex_get_channel("UCsUj0dszADCGbF3gNrQEuSQ");
     assert(strcmp(ch->id, "UCsUj0dszADCGbF3gNrQEuSQ") == 0);
     assert(strcmp(ch->name, "Tsukumo Sana Ch. hololive-EN") == 0);
     assert(strcmp(ch->englishName, "Tsukumo Sana") == 0);
@@ -35,10 +35,11 @@ int main()
     assert(strcmp(ch->suborg, "i English (Council)") == 0);
     assert(strcmp(ch->twitter, "tsukumosana") == 0);
     assert(ch->inactive == false);
-    free_channel(ch);
+
+    colodex_free_channel(ch);
 #ifdef _WIN32
     free(token); // getenv() shouldn't be freed
 #endif
-    free_colodex();
+    colodex_free();
     printf("OK\n");
 }

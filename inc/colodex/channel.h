@@ -28,5 +28,5 @@ typedef struct channel {
     char*       description;
 } channel;
 
-channel* get_channel(const char* channelId);
-void free_channel(channel* ch);
+channel* colodex_get_channel(const char* channelId);
+void colodex_free_channel(channel* ch);

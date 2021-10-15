@@ -32,7 +32,7 @@ static size_t cb(void *data, size_t size, size_t nmemb, void *userp)
     return realsize;
 }
 
-bool init_colodex(const char* apiKey)
+bool colodex_init(const char* apiKey)
 {
     m_authHeader = NULL; // In case we are calling the function twice
 
@@ -50,7 +50,7 @@ bool init_colodex(const char* apiKey)
     return true;
 }
 
-void free_colodex(void)
+void colodex_free(void)
 {
     curl_slist_free_all(m_authHeader);
 }
