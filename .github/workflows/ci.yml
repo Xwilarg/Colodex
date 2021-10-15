@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install conan
+      run:  pip3 install conan
+    - name: create build folder
+      run: mkdir build && cd build
+    - name: install dependencies
+      run: conan install .. --build=missing
+    - name: generate
+      run: cmake ..
+    - name: build
+      run: cmake --build .
+    - name: run tests (Windows)
+      if: matrix.os == 'windows-latest'
+      run: ./bin/ColodexTest.exe
+    - name: run tests (Linux)
+      if: matrix.os == "ubuntu-latest"
+      run: ./ColodexTest
