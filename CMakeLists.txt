@@ -5,7 +5,7 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
 if(MSVC)
-    SET(CMAKE_C_FLAGS "/W4 /EHsc")
+    SET(CMAKE_C_FLAGS "/W4 /EHsc /NODEFAULTLIB:library")
 else()
     SET(CMAKE_C_FLAGS "-Wall -Wextra -L.")
 endif()

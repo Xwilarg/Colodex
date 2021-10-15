@@ -7,7 +7,7 @@
 channel* get_channel(const char* channelId)
 {
     char* baseUrl = "https://holodex.net/api/v2/channels/";
-    int size = strlen(baseUrl) + strlen(channelId) + 1;
+    size_t size = strlen(baseUrl) + strlen(channelId) + 1;
     char* url = malloc(size);
     if (url == NULL)
     {

@@ -5,7 +5,7 @@
 
 char* malloc_and_copy(const char* input)
 {
-    int size = strlen(input) + 1;
+    size_t size = strlen(input) + 1;
     char* output = malloc(size);
     if (output == NULL)
     {
