@@ -5,11 +5,16 @@
 
 char* malloc_and_copy(const char* input)
 {
-    char* output = malloc(sizeof(input));
+    int size = strlen(input) + 1;
+    char* output = malloc(size);
+    if (output == NULL)
+    {
+        return NULL;
+    }
     #ifdef _WIN32
-        strcpy_s(output, sizeof(input), input);
+        strcpy_s(output, size, input);
     #else
-        strcpy(output, sizeof(input), input);
+        strcpy(output, input);
     #endif
     return output;
 }

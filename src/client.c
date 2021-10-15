@@ -34,8 +34,8 @@ bool init(const char* apiKey)
     m_authHeader = NULL; // In case we are calling the function twice
 
     // Set header
-    size_t size = 10 + strlen(apiKey);
-    char* header = malloc(size); // 10 is sizeof "X-APIKEY: "
+    size_t size = 11 + strlen(apiKey);
+    char* header = malloc(size); // 10 is sizeof "X-APIKEY: " + 1 for \0
     if (header == NULL)
     {
         fprintf(stderr, "Could not call malloc, out of memory");
@@ -43,10 +43,10 @@ bool init(const char* apiKey)
     }
 #ifdef _WIN32
     strcpy_s(header, size, "X-APIKEY: ");
-    strcpy_s(header, size, apiKey);
+    strcat_s(header, size, apiKey);
 #else
     strcpy(header, "X-APIKEY: ");
-    strcpy(header, apiKey);
+    strcat(header, apiKey);
 #endif
     m_authHeader = curl_slist_append(m_authHeader, header);
     return true;
