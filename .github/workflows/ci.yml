@@ -10,9 +10,6 @@ jobs:
   build:
 
     runs-on: ${{ matrix.os }}
-    defaults:
-      run:
-        working-directory: ./build
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -22,15 +19,22 @@ jobs:
     - uses: actions/checkout@v2
     - name: install conan
       run:  pip3 install conan
+    - name: create build folder
+      run: mkdir build
     - name: install dependencies
+      working-directory: ./build
       run: conan install .. --build=missing
     - name: generate
       run: cmake ..
+      working-directory: ./build
     - name: build
+      working-directory: ./build
       run: cmake --build .
     - name: run tests (Windows)
+      working-directory: ./build
       if: matrix.os == 'windows-latest'
       run: ./bin/ColodexTest.exe
     - name: run tests (Linux)
+      working-directory: ./build
       if: matrix.os == 'ubuntu-latest'
       run: ./ColodexTest
