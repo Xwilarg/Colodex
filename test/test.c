@@ -24,10 +24,18 @@ int main()
     }
 #endif
     init(token);
-    channel* ch = get_channel("UCUKD-uaobj9jiqB-VXt71mA");
-    printf("%s\n", ch->id);
+    channel* ch = get_channel("UCsUj0dszADCGbF3gNrQEuSQ");
+    assert(strcmp(ch->id, "UCsUj0dszADCGbF3gNrQEuSQ") == 0);
+    assert(strcmp(ch->name, "Tsukumo Sana Ch. hololive-EN") == 0);
+    assert(strcmp(ch->englishName, "Tsukumo Sana") == 0);
+    assert(ch->type == VTUBER);
+    assert(strcmp(ch->org, "Hololive") == 0);
+    assert(strcmp(ch->suborg, "i English (Council)") == 0);
+    assert(strcmp(ch->twitter, "tsukumosana") == 0);
+    assert(ch->inactive == FALSE);
     free(ch);
 #ifdef _WIN32
     free(token); // getenv() shouldn't be freed
 #endif
+    printf("OK\n");
 }
