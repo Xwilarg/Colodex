@@ -1,8 +1,5 @@
-#define _XOPEN_SOURCE
-
-#include <cjson/cJSON.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "channel.h"
 #include "client.h"
@@ -29,52 +26,31 @@ channel* colodex_get_channel(const char* channelId)
     {
         return NULL;
     }
-    ch->id = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "id")->valuestring);
-    ch->name = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "name")->valuestring);
-    ch->englishName = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "english_name")->valuestring);
 
-    char* chanType = cJSON_GetObjectItemCaseSensitive(json, "english_name")->valuestring;
-    if (strcmp(chanType, "vtuber"))
-    {
-        ch->type = VTUBER;
-    }
-    else
-    {
-        ch->type = SUBBER;
-    }
-
-    ch->org = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "org")->valuestring);
-    ch->suborg = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "suborg")->valuestring);
-    ch->photo = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "photo")->valuestring);
-    ch->banner = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "banner")->valuestring);
-    ch->twitter = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "twitter")->valuestring);
-    ch->videoCount = cJSON_GetObjectItemCaseSensitive(json, "video_count")->valueint;
-    ch->subscriberCount = cJSON_GetObjectItemCaseSensitive(json, "subscriber_count")->valueint;
-    ch->viewCount = cJSON_GetObjectItemCaseSensitive(json, "view_count")->valueint;
-    ch->clipCount = cJSON_GetObjectItemCaseSensitive(json, "clip_count")->valueint;
-    ch->lang = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "lang")->valuestring);
-
-    struct tm time;
-    memset(&time, 0, sizeof(struct tm));
-    char* timeStr = cJSON_GetObjectItemCaseSensitive(json, "published_at")->valuestring;
-#ifdef _WIN32
-    sscanf_s(timeStr, "%d-%d-%dT%d:%d:%d",
-        &time.tm_year,
-        &time.tm_mon,
-        &time.tm_mday,
-        &time.tm_hour,
-        &time.tm_min,
-        &time.tm_sec
-    );
-    time.tm_year -= 1900;
-    time.tm_mon--;
-#else
-    strptime(timeStr, "%Y-%m-%dT%H:%M:%S", &time);
-#endif
-    ch->publishedAt = mktime(&time);
-
-    ch->inactive = cJSON_IsTrue(cJSON_GetObjectItemCaseSensitive(json, "inactive"));
-    ch->description = malloc_and_copy(cJSON_GetObjectItemCaseSensitive(json, "description")->valuestring);
+    ch->id = parseString(json, "id");
+    ch->name = parseString(json, "name");
+    ch->englishName = parseString(json, "english_name");
+    ch->description = parseString(json, "description");
+    ch->photo = parseString(json, "photo");
+    ch->thumbnail = parseString(json, "thumbnail");
+    ch->banner = parseString(json, "banner");
+    ch->org = parseString(json, "org");
+    ch->suborg = parseString(json, "suborg");
+    ch->lang = parseString(json, "lang");
+    ch->publishedAt = parseDateTime(json, "published_at");
+    ch->viewCount = parseInt(json, "view_count");
+    ch->videoCount = parseInt(json, "video_count");
+    ch->subscriberCount = parseInt(json, "subscriber_count");
+    ch->commentsCrawledAt = parseDateTime(json, "comments_crawled_at");
+    ch->updatedAt = parseDateTime(json, "updated_at");
+    ch->ytUploadsId = parseString(json, "yt_uploads_id");
+    ch->crawledAt = parseDateTime(json, "crawled_at");
+    ch->type = strcmp(cJSON_GetObjectItemCaseSensitive(json, "type")->valuestring, "vtuber") == 0 ? VTUBER : SUBBER;
+    ch->clipCount = parseInt(json, "clip_count");
+    ch->twitter = parseString(json, "twitter");
+    ch->inactive = parseBool(json, "inactive");
+    ch->createdAt = parseDateTime(json, "created_at");
+    // TODO: topTopics
 
     cJSON_Delete(json);
 
@@ -86,12 +62,14 @@ void colodex_free_channel(channel* ch)
     free(ch->id);
     free(ch->name);
     free(ch->englishName);
+    free(ch->description);
+    free(ch->photo);
+    free(ch->thumbnail);
+    free(ch->banner);
     free(ch->org);
     free(ch->suborg);
-    free(ch->photo);
-    free(ch->banner);
-    free(ch->twitter);
     free(ch->lang);
-    free(ch->description);
+    free(ch->ytUploadsId);
+    free(ch->twitter);
     free(ch);
 }
