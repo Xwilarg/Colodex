@@ -69,9 +69,13 @@ bool parseBool(const cJSON* json, char* name)
 char** parseStringArray(const cJSON* json, char* name)
 {
     cJSON* array = cJSON_GetObjectItemCaseSensitive(json, name);
-    cJSON* it = array->child;
     size_t arrSize = cJSON_GetArraySize(array);
     char** result = malloc(sizeof(char*) * (arrSize + 1));
+    if (result == NULL)
+    {
+        return NULL;
+    }
+    cJSON* it = array->child;
     for (size_t i = 0; i < arrSize; i++)
     {
         result[i] = mallocAndCopy(it->valuestring);

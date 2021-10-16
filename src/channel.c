@@ -5,6 +5,15 @@
 #include "client.h"
 #include "utils.h"
 
+static channelType parseChannelType(const cJSON* json, const char* name)
+{
+    char* value = cJSON_GetObjectItemCaseSensitive(json, name)->valuestring;
+    if (strcmp(value, "vtuber") == 0) return VTUBER;
+    if (strcmp(value, "subber") == 0) return SUBBER;
+    fprintf(stderr, "Unknown channel type %s\n", value);
+    return -1;
+}
+
 channel* colodex_get_channel(const char* channelId)
 {
     char* baseUrl = "https://holodex.net/api/v2/channels/";
@@ -45,7 +54,7 @@ channel* colodex_get_channel(const char* channelId)
     ch->updatedAt = parseDateTime(json, "updated_at");
     ch->ytUploadsId = parseString(json, "yt_uploads_id");
     ch->crawledAt = parseDateTime(json, "crawled_at");
-    ch->type = strcmp(cJSON_GetObjectItemCaseSensitive(json, "type")->valuestring, "vtuber") == 0 ? VTUBER : SUBBER;
+    ch->type = parseChannelType(json, "type");
     ch->clipCount = parseInt(json, "clip_count");
     ch->twitter = parseString(json, "twitter");
     ch->inactive = parseBool(json, "inactive");
