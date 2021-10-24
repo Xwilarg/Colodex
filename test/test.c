@@ -6,7 +6,7 @@
 #include "channel.h"
 #include "client.h"
 
-int main()
+static char* getToken()
 {
 #ifdef _WIN32
     char *token;
@@ -15,17 +15,22 @@ int main()
     if (err || token == NULL)
     {
         fprintf(stderr, "Token not found in environment");
-        return 1;
+        return NULL;
     }
+    return token;
 #else
     char* token = getenv("HOLODEX_TOKEN");
     if (token == NULL)
     {
         fprintf(stderr, "Token not found in environment");
-        return 1;
+        return NULL;
     }
+    return token;
 #endif
-    colodex_init(token);
+}
+
+static void testChannel(void)
+{
     channel* ch = colodex_get_channel("UCsUj0dszADCGbF3gNrQEuSQ");
     assert(strcmp(ch->id, "UCsUj0dszADCGbF3gNrQEuSQ") == 0);
     assert(strcmp(ch->name, "Tsukumo Sana Ch. hololive-EN") == 0);
@@ -37,6 +42,19 @@ int main()
     assert(ch->inactive == false);
 
     colodex_free_channel(ch);
+}
+
+int main()
+{
+    char* token = getToken();
+    if (token == NULL)
+    {
+        return 1;
+    }
+    colodex_init(token);
+
+    testChannel();
+
 #ifdef _WIN32
     free(token); // getenv() shouldn't be freed
 #endif
