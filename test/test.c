@@ -71,6 +71,7 @@ int main()
     colodex_init(token);
 
     testChannel();
+    testVideoSong();
 
 #ifdef _WIN32
     free(token); // getenv() shouldn't be freed
