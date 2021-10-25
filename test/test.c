@@ -54,7 +54,7 @@ static void testVideoSong(void)
     assert(vid->type == STREAM);
     assert(strcmp(vid->topicId, "Original_Song") == 0);
     // TODO: Compare datetimes
-    assert(vid->duration == 233);
+    assert(vid->duration == 223);
     assert(vid->status == PAST);
     assert(vid->songcount == 1);
 
