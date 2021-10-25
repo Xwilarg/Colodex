@@ -24,7 +24,10 @@ typedef struct video {
     time_t      availableAt;
     videoStatus status;
     int         duration;
+    int         songcount;
 } video;
 
-video** colodex_query_videos(const char* channelId);
+video* colodex_get_video_from_id(const char* videoId);
+video** colodex_get_video_from_channel_id(const char* channelId);
+void colodex_free_video(video* vid);
 void colodex_free_videos(video** vids);

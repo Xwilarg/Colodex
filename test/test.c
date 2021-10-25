@@ -3,7 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+
 #include "channel.h"
+#include "video.h"
 #include "client.h"
 
 static char* getToken()
@@ -42,6 +44,21 @@ static void testChannel(void)
     assert(ch->inactive == false);
 
     colodex_free_channel(ch);
+}
+
+static void testVideoSong(void)
+{
+    video* vid = colodex_get_video_from_id("-AuQZrUHjhg");
+    assert(strcmp(vid->id, "-AuQZrUHjhg") == 0);
+    assert(strcmp(vid->title, "[MV] Red - Calliope Mori #HololiveEnglish #HoloMyth") == 0);
+    assert(vid->type == STREAM);
+    assert(strcmp(vid->topicId, "Original_Song") == 0);
+    // TODO: Compare datetimes
+    assert(vid->duration == 233);
+    assert(vid->status == PAST);
+    assert(vid->songcount == 1);
+
+    colodex_free_video(vid);
 }
 
 int main()

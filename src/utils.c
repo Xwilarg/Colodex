@@ -31,12 +31,22 @@ static char* mallocAndCopy(const char* input)
 
 char* parseString(const cJSON* json, char* name)
 {
-    return mallocAndCopy(cJSON_GetObjectItemCaseSensitive(json, name)->valuestring);
+    cJSON* elem = cJSON_GetObjectItemCaseSensitive(json, name);
+    if (elem == NULL)
+    {
+        return NULL;
+    }
+    return mallocAndCopy(elem->valuestring);
 }
 
 int parseInt(const cJSON* json, char* name)
 {
-    return cJSON_GetObjectItemCaseSensitive(json, name)->valueint;
+    cJSON* elem = cJSON_GetObjectItemCaseSensitive(json, name);
+    if (elem == NULL)
+    {
+        return 0;
+    }
+    return elem->valueint;
 }
 
 time_t parseDateTime(const cJSON* json, char* name)
