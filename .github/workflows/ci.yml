@@ -30,7 +30,7 @@ jobs:
       run: cmake ..
     - name: build
       working-directory: ./build
-      run: cmake --build .
+      run: cmake --build .  --config Release
     - name: fix executable name
       run: cp ./build/bin/ColodexTest.exe ./ColodexTest.exe || cp ./build/bin/ColodexTest* ./ColodexTest.exe
     - name: run tests

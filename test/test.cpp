@@ -1,8 +1,12 @@
+#define _ITERATOR_DEBUG_LEVEL 0
+
 #include <gtest/gtest.h>
 
-#include "channel.h"
-#include "video.h"
-#include "client.h"
+extern "C" {
+    #include "channel.h"
+    #include "video.h"
+    #include "client.h"
+}
 
 static char* getToken()
 {

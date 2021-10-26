@@ -11,7 +11,7 @@ To install and build Colodex, you'll need [Conan](https://conan.io/downloads.htm
 mkdir build && cd build
 conan install .. --build=missing
 cmake ..
-cmake --build .
+cmake --build . --config Release
 ```
 
 ## Example
