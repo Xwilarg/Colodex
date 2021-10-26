@@ -65,10 +65,11 @@ time_t parseDateTime(const cJSON* json, char* name)
     );
     time.tm_year -= 1900;
     time.tm_mon--;
+    return _mkgmtime(&time);
 #else
     strptime(timeStr, "%Y-%m-%dT%H:%M:%S", &time);
+    return timegm(&time);
 #endif
-    return mktime(&time);
 }
 
 bool parseBool(const cJSON* json, char* name)

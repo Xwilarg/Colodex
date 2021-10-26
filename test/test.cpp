@@ -61,8 +61,8 @@ TEST(VideoTest, Song)
     EXPECT_EQ("[MV] Red - Calliope Mori #HololiveEnglish #HoloMyth", std::string(vid->title));
     EXPECT_EQ(STREAM, vid->type);
     EXPECT_EQ("Original_Song", std::string(vid->topicId));
-    EXPECT_EQ(1617539414, vid->publishedAt);
-    EXPECT_EQ(1617539414, vid->availableAt);
+    EXPECT_EQ(1617543014, vid->publishedAt);
+    EXPECT_EQ(1617543014, vid->availableAt);
     EXPECT_EQ(223, vid->duration);
     EXPECT_EQ(PAST, vid->status);
     EXPECT_EQ(1, vid->songcount);
@@ -84,8 +84,8 @@ TEST(VideoTest, StreamWithUnicode)
     EXPECT_EQ("【R6S】私にかかれば負けnあ… ーRainbow Six Siege【獅白ぼたん/ホロライブ】", std::string(vid->title));
     EXPECT_EQ(STREAM, vid->type);
     EXPECT_EQ("Rainbow_Six", std::string(vid->topicId));
-    EXPECT_EQ(1600052402, vid->publishedAt);
-    EXPECT_EQ(1600052402, vid->availableAt);
+    EXPECT_EQ(1600056002, vid->publishedAt);
+    EXPECT_EQ(1600056002, vid->availableAt);
     EXPECT_EQ(701, vid->duration);
     EXPECT_EQ(PAST, vid->status);
     EXPECT_EQ(0, vid->songcount);
