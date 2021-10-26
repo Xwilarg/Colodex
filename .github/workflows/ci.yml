@@ -22,10 +22,9 @@ jobs:
       run:  pip3 install conan
     - name: create build folder
       run: mkdir build
-    - name: create conan default profile
-      run: conan profile new default --detect
     - name: set default conan c++ version
-      run: conan profile update settings.compiler.libcxx=libstdc++11 default
+      if: matrix.os == 'ubuntu-latest'
+      run: conan profile new default --detect && conan profile update settings.compiler.libcxx=libstdc++11 default
     - name: install dependencies
       working-directory: ./build
       run: conan install .. --build=missing
