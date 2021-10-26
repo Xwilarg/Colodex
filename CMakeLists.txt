@@ -9,7 +9,7 @@ if(MSVC)
     SET(CMAKE_CXX_FLAGS "/W4 /EHsc /utf-8")
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 else()
-    SET(CMAKE_C_FLAGS "-Wall -Wextra -L.")
+    SET(CMAKE_C_FLAGS "-Wall -Wextra -L. -D_DEFAULT_SOURCE")
     SET(CMAKE_CXX_FLAGS "-Wall -Wextra -L.")
 endif()
 
