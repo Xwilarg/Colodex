@@ -61,12 +61,36 @@ TEST(VideoTest, Song)
     EXPECT_EQ("[MV] Red - Calliope Mori #HololiveEnglish #HoloMyth", std::string(vid->title));
     EXPECT_EQ(STREAM, vid->type);
     EXPECT_EQ("Original_Song", std::string(vid->topicId));
-    // TODO: Compare datetimes
+    EXPECT_EQ(1617539414, vid->publishedAt);
+    EXPECT_EQ(1617539414, vid->availableAt);
     EXPECT_EQ(223, vid->duration);
     EXPECT_EQ(PAST, vid->status);
     EXPECT_EQ(1, vid->songcount);
     colodex_free_video(vid);
     
+#ifdef _WIN32
+    free(token);
+#endif
+    colodex_free();
+}
+
+TEST(VideoTest, StreamWithUnicode)
+{
+    char* token = getToken();
+    colodex_init(token);
+
+    video* vid = colodex_get_video_from_id("Lm1k8TI790Y");
+    EXPECT_EQ("Lm1k8TI790Y", std::string(vid->id));
+    EXPECT_EQ("【R6S】私にかかれば負けnあ… ーRainbow Six Siege【獅白ぼたん/ホロライブ】", std::string(vid->title));
+    EXPECT_EQ(STREAM, vid->type);
+    EXPECT_EQ("Rainbow_Six", std::string(vid->topicId));
+    EXPECT_EQ(1600052402, vid->publishedAt);
+    EXPECT_EQ(1600052402, vid->availableAt);
+    EXPECT_EQ(701, vid->duration);
+    EXPECT_EQ(PAST, vid->status);
+    EXPECT_EQ(0, vid->songcount);
+    colodex_free_video(vid);
+
 #ifdef _WIN32
     free(token);
 #endif
