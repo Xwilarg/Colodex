@@ -1,6 +1,7 @@
 [requires]
 libcurl/7.78.0
 cjson/1.7.15
+gtest/1.11.0
 
 [options]
 openssl:shared=True
