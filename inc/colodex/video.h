@@ -6,7 +6,8 @@
 
 typedef enum video_type {
     STREAM,
-    CLIP
+    CLIP,
+    PLACEHOLDER
 } video_type;
 
 typedef enum video_status {

@@ -52,14 +52,16 @@ int main()
 
     query_video* query = (query_video*)malloc(sizeof(query_video));
     query->status = UPCOMING; // Only get upcoming videos
+    query->type = STREAM; // Don't take the clippers, only the streamers
+    query->order = ASCENDING; // Order with the most recent first
     query->limit = 5; // Only get 10 videos
-    video** vids = colodex_get_videos(query, (query_video_param)(STATUS | LIMIT));
+    video** vids = colodex_get_videos(query, (query_video_param)(STATUS | TYPE | ORDER | LIMIT));
     free(query);
 
     for (video **it = vids; *it != NULL; it++)
     {
         struct tm* tm = localtime(&(*it)->available_at);
-        printf("Upcoming stream from %s at %s: %s\n", (*it)->channel_info->english_name, strtok(asctime(tm), "\n"), (*it)->title);
+        printf("Upcoming stream from %s at %s: %s\n", (*it)->channel_info->name, strtok(asctime(tm), "\n"), (*it)->title);
     }
 
     // Don't forget to clean!
@@ -69,9 +71,9 @@ int main()
 ```
 Sample output:
 ```
-Upcoming stream from Planya at Sun Aug 11 13:05:00 2024: Стрим из душа.
-Upcoming stream from Kami Neko at Wed Jul 31 17:00:00 2024: 👑Free chat👑
-Upcoming stream from Utatane Nasa at Tue Jul 30 17:00:00 2024: 【今週のスケジュール&フリートーク】
-Upcoming stream from Shiotenshi Rieru at Sun Jun 30 17:00:00 2024: 随時更新Twitterタグ #次の正座待機 アーカイブはほぼ残りません
-Upcoming stream from Yumeoi Kakeru at Fri Jun 28 13:00:00 2024: 夢追翔のフリーチャット【ふりーちゃっと / FreeChat】
+Upcoming stream from 天川はの/AmakawaHano at Wed Oct 27 23:05:00 2021: 𓊆 朝活 𓊇 17日目 💪筋トレが輝く朝 𓊆 天川はの￤Vtuber 𓊇
+Upcoming stream from Walfie at Wed Oct 27 23:30:00 2021: Inside
+Upcoming stream from ヒナミソラ - Hina Misora【WACTOR】 at Thu Oct 28 00:00:00 2021: Responder 30 preguntas【WACTOR/#ヒナミソラ】
+Upcoming stream from kson ONAIR at Thu Oct 28 00:00:00 2021: 【GMMF🌎】元気に朝を迎える!10/28のさわやかNEWSをどうぞ! #GMMF #早朝から総長
+Upcoming stream from Watson Amelia Ch. hololive-EN at Thu Oct 28 00:00:00 2021: 【Little Nightmare 2】SpoOoOOoky Game~
 ```

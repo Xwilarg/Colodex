@@ -123,7 +123,6 @@ TEST(VideoTest, StreamWithInvalidId)
     colodex_free();
 }
 
-
 TEST(VideosTest, OnlyUpcomingStreams)
 {
     char* token = getToken();
@@ -134,12 +133,10 @@ TEST(VideosTest, OnlyUpcomingStreams)
     video** vids = colodex_get_videos_from_channel_id("UCLhUvJ_wO9hOvv_yYENu4fQ", query, STATUS);
     delete query;
 
-    int index = 0;
-    video* curr = vids[0];
-    while (curr != NULL)
+    for (video **it = vids; *it != NULL; it++)
     {
-        EXPECT_EQ(UPCOMING, curr->status);
-        curr = vids[++index];
+        EXPECT_EQ(UPCOMING, (*it)->status);
+        // Can't really check much here :(
     }
     colodex_free_videos(vids);
 
@@ -176,8 +173,10 @@ TEST(Readme, GetUpcomingStreams)
 
     query_video* query = (query_video*)malloc(sizeof(query_video));
     query->status = UPCOMING;
+    query->type = STREAM;
+    query->order = ASCENDING;
     query->limit = 5;
-    video** vids = colodex_get_videos(query, (query_video_param)(STATUS | LIMIT));
+    video** vids = colodex_get_videos(query, (query_video_param)(STATUS | TYPE | ORDER | LIMIT));
     free(query);
 
     for (video **it = vids; *it != NULL; it++)

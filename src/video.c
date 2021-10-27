@@ -12,6 +12,7 @@ static video_type parse_video_type(const cJSON* json, const char* name)
     char* value = cJSON_GetObjectItemCaseSensitive(json, name)->valuestring;
     if (strcmp(value, "stream") == 0) return STREAM;
     if (strcmp(value, "clip") == 0) return CLIP;
+    if (strcmp(value, "placeholder") == 0) return PLACEHOLDER;
     fprintf(stderr, "Unknown video type %s\n", value);
     return -1;
 }
@@ -175,7 +176,7 @@ static char* create_url(const query_video* query, query_video_param params)
                 fprintf(stderr, "Unknown type %d\n", query->type);
                 return NULL;
         }
-        url = malloc_or_append(url, "&order=", type);
+        url = malloc_or_append(url, "&type=", type);
     }
     return url;
 }

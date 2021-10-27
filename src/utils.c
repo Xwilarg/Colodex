@@ -51,9 +51,14 @@ int parse_int(const cJSON* json, char* name)
 
 time_t parse_date_time(const cJSON* json, char* name)
 {
+    cJSON* elem = cJSON_GetObjectItemCaseSensitive(json, name);
+    if (elem == NULL)
+    {
+        return 0L;
+    }
     struct tm time;
     memset(&time, 0, sizeof(struct tm));
-    char* timeStr = cJSON_GetObjectItemCaseSensitive(json, name)->valuestring;
+    char* timeStr = elem->valuestring;
 #ifdef _WIN32
     sscanf_s(timeStr, "%d-%d-%dT%d:%d:%d",
         &time.tm_year,
