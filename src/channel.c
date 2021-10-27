@@ -38,6 +38,7 @@ void free_channel_min(channel_min* ch)
     free(ch->org);
     free(ch->photo);
     free(ch->english_name);
+    free(ch);
 }
 
 channel* colodex_get_channel(const char* channel_id)

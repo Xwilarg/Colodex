@@ -53,13 +53,15 @@ static video* parse_video(cJSON* json)
 
 static char* malloc_or_append(char* text, const char* append, const char* appendArg)
 {
-    size_t size = strlen(text) + strlen(append) + strlen(appendArg) + 1;
+    size_t size;
     if (text == NULL)
     {
-        text = malloc(strlen(text) + strlen(append) + 1);
-        snprintf(text, size, "%s%s%s", text, append, appendArg);
+        size = strlen(append) + strlen(appendArg) + 1;
+        text = malloc(size);
+        snprintf(text, size, "%s%s", append, appendArg);
         return text;
     }
+    size = strlen(text) + strlen(append) + strlen(appendArg) + 1;
     text = realloc(text, size);
 #ifdef _WIN32
     strcat_s(text, size, append);
@@ -75,7 +77,9 @@ static char* create_url(const query_video* query, query_video_param params)
 {
     if (query == NULL)
     {
-        return NULL;
+        char* empty = malloc(1);
+        empty[0] = '\0';
+        return empty;
     }
     char* url = NULL;
     if ((params & MAX_UPCOMING_HOURS) != 0)
@@ -112,17 +116,13 @@ video* colodex_get_video_from_id(const char* video_id, const query_video* query,
 
     if (arrSize == 0) // No video with this ID
     {
+        cJSON_Delete(json);
         return NULL;
     }
 
-    video* vid;
-    vid = malloc(sizeof(video));
-    if (vid == NULL)
-    {
-        return NULL;
-    }
-
-    return parse_video(json->child);
+    video* vid = parse_video(json->child);
+    cJSON_Delete(json);
+    return vid;
 }
 
 video** colodex_get_video_from_channel_id(const char* channel_id, const query_video* query, query_video_param params)
@@ -156,6 +156,7 @@ video** colodex_get_video_from_channel_id(const char* channel_id, const query_vi
         it = it->next;
     }
     vid[arrSize] = NULL;
+    cJSON_Delete(json);
     return vid;
 }
 
@@ -164,6 +165,7 @@ void colodex_free_video(video* vid)
     free(vid->id);
     free(vid->title);
     free(vid->topic_id);
+    free_channel_min(vid->channel_info);
     free(vid);
 }
 
