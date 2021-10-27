@@ -37,3 +37,45 @@ Expected output:
 ```
 The twitter ID of Tsukumo Sana from Hololive is tsukumosana
 ```
+
+### Get upcoming streams
+```c
+#include <stdio.h> // printf
+#include <time.h> // localtime and asctime
+#include <string.h> // strtok
+#include "colodex/channel.h"
+#include "colodex/client.h"
+
+int main()
+{
+    colodex_init(/* YOUR HOLODEX TOKEN */); // https://holodex.net/login
+
+    query_video* query = new query_video();
+    query->status = UPCOMING; // Only get upcoming videos
+    query->limit = 10; // Only get 10 videos
+    video** vids = colodex_get_videos(query, (query_video_param)(STATUS | LIMIT));
+
+    for (video **it = vids; *it != NULL; it++)
+    {
+        struct tm* tm = localtime(&(*it)->available_at);
+        printf("Upcoming stream from %s at %s: %s\n", (*it)->channel_info->english_name, strtok(asctime(tm), "\n"), (*it)->title);
+    }
+
+    // Don't forget to clean!
+    colodex_free_videos(vids);
+    colodex_free();
+}
+```
+Sample output:
+```
+Upcoming stream from Planya at Sun Aug 11 13:05:00 2024: Стрим из душа.
+Upcoming stream from Kami Neko at Wed Jul 31 17:00:00 2024: 👑Free chat👑
+Upcoming stream from Utatane Nasa at Tue Jul 30 17:00:00 2024: 【今週のスケジュール&フリートーク】
+Upcoming stream from Shiotenshi Rieru at Sun Jun 30 17:00:00 2024: 随時更新Twitterタグ #次の正座待機 アーカイブはほぼ残りません
+Upcoming stream from Yumeoi Kakeru at Fri Jun 28 13:00:00 2024: 夢追翔のフリーチャット【ふりーちゃっと / FreeChat】
+Upcoming stream from Hina Misora at Thu Jun 20 18:45:00 2024: 【Horario semanal】
+Upcoming stream from Azuchi Momo at Sun Jun  2 17:00:00 2024: スケジュール
+Upcoming stream from Quon Tama at Tue May 28 17:00:00 2024: 【FreeChat】たまわーるどへようこそ!
+Upcoming stream from Piroparu at Thu May 23 17:00:00 2024: ||*||:|| Free Chat フリーチャット ||:||*||
+Upcoming stream from Seffyna at Thu May 16 16:55:00 2024: 💗FREE CHAT🌕
+```

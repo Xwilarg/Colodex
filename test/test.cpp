@@ -131,7 +131,7 @@ TEST(VideosTest, OnlyUpcomingStreams)
 
     query_video* query = new query_video();
     query->status = UPCOMING;
-    video** vids = colodex_get_video_from_channel_id("UCLhUvJ_wO9hOvv_yYENu4fQ", query, STATUS);
+    video** vids = colodex_get_videos_from_channel_id("UCLhUvJ_wO9hOvv_yYENu4fQ", query, STATUS);
     delete query;
 
     int index = 0;
@@ -162,6 +162,28 @@ TEST(Readme, GetChannel)
         "The twitter ID of " + std::string(ch->english_name) + " from " + std::string(ch->org) + " is " + std::string(ch->twitter) + "\n"
     );
     colodex_free_channel(ch);
+
+#ifdef _WIN32
+    free(token); // getenv() shouldn't be freed
+#endif
+    colodex_free();
+}
+
+TEST(Readme, GetUpcomingStreams)
+{
+    char* token = getToken();
+    colodex_init(token);
+
+    query_video* query = new query_video();
+    query->status = UPCOMING;
+    query->limit = 10;
+    video** vids = colodex_get_videos(query, (query_video_param)(STATUS | LIMIT));
+    for (video **it = vids; *it != NULL; it++)
+    {
+        EXPECT_EQ(UPCOMING, (*it)->status);
+        // Can't really check much here :(
+    }
+    colodex_free_videos(vids);
 
 #ifdef _WIN32
     free(token); // getenv() shouldn't be freed
