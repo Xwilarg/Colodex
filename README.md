@@ -52,7 +52,7 @@ int main()
 
     query_video* query = new query_video();
     query->status = UPCOMING; // Only get upcoming videos
-    query->limit = 10; // Only get 10 videos
+    query->limit = 5; // Only get 10 videos
     video** vids = colodex_get_videos(query, (query_video_param)(STATUS | LIMIT));
 
     for (video **it = vids; *it != NULL; it++)
@@ -73,9 +73,4 @@ Upcoming stream from Kami Neko at Wed Jul 31 17:00:00 2024: 👑Free chat👑
 Upcoming stream from Utatane Nasa at Tue Jul 30 17:00:00 2024: 【今週のスケジュール&フリートーク】
 Upcoming stream from Shiotenshi Rieru at Sun Jun 30 17:00:00 2024: 随時更新Twitterタグ #次の正座待機 アーカイブはほぼ残りません
 Upcoming stream from Yumeoi Kakeru at Fri Jun 28 13:00:00 2024: 夢追翔のフリーチャット【ふりーちゃっと / FreeChat】
-Upcoming stream from Hina Misora at Thu Jun 20 18:45:00 2024: 【Horario semanal】
-Upcoming stream from Azuchi Momo at Sun Jun  2 17:00:00 2024: スケジュール
-Upcoming stream from Quon Tama at Tue May 28 17:00:00 2024: 【FreeChat】たまわーるどへようこそ!
-Upcoming stream from Piroparu at Thu May 23 17:00:00 2024: ||*||:|| Free Chat フリーチャット ||:||*||
-Upcoming stream from Seffyna at Thu May 16 16:55:00 2024: 💗FREE CHAT🌕
 ```

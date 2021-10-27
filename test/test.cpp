@@ -176,7 +176,7 @@ TEST(Readme, GetUpcomingStreams)
 
     query_video* query = new query_video();
     query->status = UPCOMING;
-    query->limit = 10;
+    query->limit = 5;
     video** vids = colodex_get_videos(query, (query_video_param)(STATUS | LIMIT));
     for (video **it = vids; *it != NULL; it++)
     {
