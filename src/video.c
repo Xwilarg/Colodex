@@ -76,6 +76,16 @@ static char* malloc_or_append(char* text, const char* append, const char* append
     return text;
 }
 
+static char* int_to_string(int value, char* buffer)
+{
+#ifdef _WIN32
+    sprintf_s(buffer, 10, "%d", value);
+#else
+    sprintf(buffer, "%d", value);
+#endif
+    return buffer;
+}
+
 // Create parameter part of URL given query info
 static char* create_url(const query_video* query, query_video_param params)
 {
@@ -86,15 +96,39 @@ static char* create_url(const query_video* query, query_video_param params)
         return empty;
     }
     char* url = NULL;
+    char buffer[10];
+    if ((params & LIMIT) != 0) // Limit the number of result
+    {
+        url = malloc_or_append(url, "&limit=", int_to_string(query->limit, buffer));
+    }
     if ((params & MAX_UPCOMING_HOURS) != 0) // Remove video that come further than the giving hour
     {
-        char buffer[10];
-#ifdef _WIN32
-        sprintf_s(buffer, 10, "%d", query->max_upcoming_hours);
-#else
-        sprintf(buffer, "%d", query->max_upcoming_hours);
-#endif
-        url = malloc_or_append(url, "&max_upcoming_hours=", buffer);
+        url = malloc_or_append(url, "&max_upcoming_hours=", int_to_string(query->max_upcoming_hours, buffer));
+    }
+    if ((params & OFFSET) != 0) // Offset results
+    {
+        url = malloc_or_append(url, "&offset=", int_to_string(query->offset, buffer));
+    }
+    if ((params & ORDER) != 0) // Sort results by ascending or descending
+    {
+        char* order;
+        switch (query->order)
+        {
+            case ASCENDING:
+                order = "asc";
+                break;
+            case DESCENDING:
+                order = "desc";
+                break;
+            default:
+                fprintf(stderr, "Unknown order %d\n", query->order);
+                return NULL;
+        }
+        url = malloc_or_append(url, "&order=", order);
+    }
+    if ((params & ORG) != 0) // Filter by org that the vtubers belong to
+    {
+        url = malloc_or_append(url, "&org=", query->org);
     }
     if ((params & STATUS) != 0) // Filter by video status
     {
@@ -104,38 +138,44 @@ static char* create_url(const query_video* query, query_video_param params)
             case NEW:
                 status = "new";
                 break;
-
             case UPCOMING:
                 status = "upcoming";
                 break;
-
             case LIVE:
                 status = "live";
                 break;
-
             case PAST:
                 status = "past";
                 break;
-
             case MISSING:
                 status = "missing";
                 break;
-
             default:
-                fprintf(stderr, "Unknown video type %d\n", query->status);
+                fprintf(stderr, "Unknown status %d\n", query->status);
                 return NULL;
         }
         url = malloc_or_append(url, "&status=", status);
     }
-    if ((params & LIMIT) != 0) // Limit the number of result
+    if ((params & TOPIC) != 0) // Filter by video topic
     {
-        char buffer[10];
-#ifdef _WIN32
-        sprintf_s(buffer, 10, "%d", query->limit);
-#else
-        sprintf(buffer, "%d", query->limit);
-#endif
-        url = malloc_or_append(url, "&limit=", buffer);
+        url = malloc_or_append(url, "&topic=", query->topic);
+    }
+    if ((params & TYPE) != 0) // Filter by streams or clippers
+    {
+        char* type;
+        switch (query->type)
+        {
+            case STREAM:
+                type = "stream";
+                break;
+            case CLIP:
+                type = "clip";
+                break;
+            default:
+                fprintf(stderr, "Unknown type %d\n", query->type);
+                return NULL;
+        }
+        url = malloc_or_append(url, "&order=", type);
     }
     return url;
 }

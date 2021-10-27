@@ -17,6 +17,11 @@ typedef enum video_status {
     MISSING
 } video_status;
 
+typedef enum order {
+    ASCENDING,
+    DESCENDING
+} order;
+
 typedef struct video {
     char*       id;
     char*       title;
@@ -31,16 +36,26 @@ typedef struct video {
 } video;
 
 typedef struct query_video {
-    int         max_upcoming_hours;
-    video_status status;
     int         limit;
+    int         max_upcoming_hours;
+    int         offset;
+    order       order;
+    char*       org;
+    video_status status;
+    char*       topic;
+    video_type  type;
 } query_video;
 
 typedef enum query_video_param {
-    NONE = 0,
-    MAX_UPCOMING_HOURS = 1,
-    STATUS = 2,
-    LIMIT = 4
+    NONE                = 0,
+    LIMIT               = 1,
+    MAX_UPCOMING_HOURS  = 2,
+    OFFSET              = 4,
+    ORDER               = 8,
+    ORG                 = 16,
+    STATUS              = 32,
+    TOPIC               = 64,
+    TYPE                = 128
 } query_video_param;
 
 video* colodex_get_video_from_id(const char* video_id);
