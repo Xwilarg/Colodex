@@ -40,3 +40,13 @@ jobs:
       env:
         HOLODEX_TOKEN: ${{ secrets.HOLODEX_TOKEN }}
       run: ./ColodexTest.exe
+    - if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: Linux
+        path: ./build/lib/libColodex.a
+    - if: matrix.os == 'windows-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: Windows
+        path: ./build/lib/Colodex.lib
