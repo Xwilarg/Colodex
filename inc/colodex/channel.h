@@ -3,15 +3,15 @@
 #include <time.h>
 #include <stdbool.h>
 
-typedef enum channelType {
+typedef enum channel_type {
     VTUBER,
     SUBBER
-} channelType;
+} channel_type;
 
 typedef struct channel {
     char*       id;
     char*       name;
-    char*       englishName;
+    char*       english_name;
     char*       description;
     char*       photo;
     char*       thumbnail;
@@ -19,21 +19,21 @@ typedef struct channel {
     char*       org;
     char*       suborg;
     char*       lang;
-    time_t      publishedAt;
-    int         viewCount;
-    int         videoCount;
-    int         subscriberCount;
-    time_t      commentsCrawledAt;
-    time_t      updatedAt;
-    char*       ytUploadsId;
-    time_t      crawledAt;
-    channelType type;
-    int         clipCount;
+    time_t      published_at;
+    int         view_count;
+    int         video_count;
+    int         subscriber_count;
+    time_t      comments_crawled_at;
+    time_t      updated_at;
+    char*       yt_uploads_id;
+    time_t      crawled_at;
+    channel_type type;
+    int         clip_count;
     char*       twitter;
     bool        inactive;
-    time_t      createdAt;
-    char**      topTopics;
+    time_t      created_at;
+    char**      top_topics;
 } channel;
 
-channel* colodex_get_channel(const char* channelId);
+channel* colodex_get_channel(const char* channel_id);
 void colodex_free_channel(channel* ch);

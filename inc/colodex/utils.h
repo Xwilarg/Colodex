@@ -2,8 +2,8 @@
 
 #include <cjson/cJSON.h>
 
-char* parseString(const cJSON* json, char* name);
-int parseInt(const cJSON* json, char* name);
-time_t parseDateTime(const cJSON* json, char* name);
-bool parseBool(const cJSON* json, char* name);
-char** parseStringArray(const cJSON* json, char* name);
+char* parse_string(const cJSON* json, char* name);
+int parse_int(const cJSON* json, char* name);
+time_t parse_date_time(const cJSON* json, char* name);
+bool parse_bool(const cJSON* json, char* name);
+char** parse_strin_array(const cJSON* json, char* name);

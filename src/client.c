@@ -4,7 +4,7 @@
 
 #include "client.h"
 
-static struct curl_slist *m_authHeader = NULL;
+static struct curl_slist *m_auth_header = NULL;
 
 struct memory {
    char *response;
@@ -32,32 +32,32 @@ static size_t cb(void *data, size_t size, size_t nmemb, void *userp)
     return realsize;
 }
 
-bool colodex_init(const char* apiKey)
+bool colodex_init(const char* api_key)
 {
-    m_authHeader = NULL; // In case we are calling the function twice
+    m_auth_header = NULL; // In case we are calling the function twice
 
     // Set header
-    size_t size = 11 + strlen(apiKey);
+    size_t size = 11 + strlen(api_key);
     char* header = malloc(size); // 10 is sizeof "X-APIKEY: " + 1 for \0
     if (header == NULL)
     {
         fprintf(stderr, "Could not call malloc, out of memory");
         return false;
     }
-    snprintf(header, size, "%s%s", "X-APIKEY: ", apiKey);
-    m_authHeader = curl_slist_append(m_authHeader, header);
+    snprintf(header, size, "%s%s", "X-APIKEY: ", api_key);
+    m_auth_header = curl_slist_append(m_auth_header, header);
     free(header);
     return true;
 }
 
 void colodex_free(void)
 {
-    curl_slist_free_all(m_authHeader);
+    curl_slist_free_all(m_auth_header);
 }
 
 char* request(const char* url)
 {
-    if (m_authHeader == NULL)
+    if (m_auth_header == NULL)
     {
         fprintf(stderr, "init(const char* apiKey) must be called first\n");
         return NULL;
@@ -66,7 +66,7 @@ char* request(const char* url)
     // Create handle for request
     CURL *handle = curl_easy_init();
     curl_easy_setopt(handle, CURLOPT_URL, url);
-    curl_easy_setopt(handle, CURLOPT_HTTPHEADER, m_authHeader);
+    curl_easy_setopt(handle, CURLOPT_HTTPHEADER, m_auth_header);
 
     struct memory chunk = {0};
     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, cb);

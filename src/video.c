@@ -5,7 +5,7 @@
 #include "client.h"
 #include "utils.h"
 
-static videoType parseVideoType(const cJSON* json, const char* name)
+static video_type parse_video_type(const cJSON* json, const char* name)
 {
     char* value = cJSON_GetObjectItemCaseSensitive(json, name)->valuestring;
     if (strcmp(value, "stream") == 0) return STREAM;
@@ -14,7 +14,7 @@ static videoType parseVideoType(const cJSON* json, const char* name)
     return -1;
 }
 
-static videoStatus parseVideoStatus(const cJSON* json, const char* name)
+static video_status parseVideoStatus(const cJSON* json, const char* name)
 {
     char* value = cJSON_GetObjectItemCaseSensitive(json, name)->valuestring;
     if (strcmp(value, "new") == 0) return NEW;
@@ -26,7 +26,7 @@ static videoStatus parseVideoStatus(const cJSON* json, const char* name)
     return -1;
 }
 
-static video* parseVideo(cJSON* json)
+static video* parse_video(cJSON* json)
 {
     video* vid = malloc(sizeof(video));
     if (vid == NULL)
@@ -34,29 +34,29 @@ static video* parseVideo(cJSON* json)
         return NULL;
     }
 
-    vid->id = parseString(json, "id");
-    vid->title = parseString(json, "title");
-    vid->type = parseVideoType(json, "type");
-    vid->topicId = parseString(json, "topic_id");
-    vid->publishedAt = parseDateTime(json, "published_at");
-    vid->availableAt = parseDateTime(json, "available_at");
-    vid->status = parseVideoStatus(json, "status");
-    vid->duration = parseInt(json, "duration");
-    vid->songcount = parseInt(json, "songcount");
+    vid->id = parse_string(json, "id");
+    vid->title = parse_string(json, "title");
+    vid->type = parse_video_type(json, "type");
+    vid->topic_id = parse_string(json, "topic_id");
+    vid->published_at = parse_date_time(json, "published_at");
+    vid->available_at = parse_date_time(json, "available_at");
+    vid->status = parse_video_status(json, "status");
+    vid->duration = parseint(json, "duration");
+    vid->songcount = parse_int(json, "songcount");
     // TODO: live_tl_count
     return vid;
 }
 
-video* colodex_get_video_from_id(const char* videoId)
+video* colodex_get_video_from_id(const char* video_id)
 {
     char* baseUrl = "https://holodex.net/api/v2/videos?id=";
-    size_t size = strlen(baseUrl) + strlen(videoId) + 1;
+    size_t size = strlen(baseUrl) + strlen(video_id) + 1;
     char* url = malloc(size);
     if (url == NULL)
     {
         return NULL;
     }
-    snprintf(url, size, "%s%s", baseUrl, videoId);
+    snprintf(url, size, "%s%s", baseUrl, video_id);
     char* resp = request(url);
     cJSON* json = cJSON_Parse(resp);
     free(resp);
@@ -79,16 +79,16 @@ video* colodex_get_video_from_id(const char* videoId)
     return parseVideo(json->child);
 }
 
-video** colodex_get_video_from_channel_id(const char* channelId)
+video** colodex_get_video_from_channel_id(const char* channel_id)
 {
     char* baseUrl = "https://holodex.net/api/v2/videos?channel_id=";
-    size_t size = strlen(baseUrl) + strlen(channelId) + 1;
+    size_t size = strlen(baseUrl) + strlen(channel_id) + 1;
     char* url = malloc(size);
     if (url == NULL)
     {
         return NULL;
     }
-    snprintf(url, size, "%s%s", baseUrl, channelId);
+    snprintf(url, size, "%s%s", baseUrl, channel_id);
     char* resp = request(url);
     cJSON* json = cJSON_Parse(resp);
     free(resp);
@@ -115,7 +115,7 @@ void colodex_free_video(video* vid)
 {
     free(vid->id);
     free(vid->title);
-    free(vid->topicId);
+    free(vid->topic_id);
     free(vid);
 }
 

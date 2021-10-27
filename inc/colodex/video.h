@@ -2,32 +2,32 @@
 
 #include <time.h>
 
-typedef enum videoType {
+typedef enum video_type {
     STREAM,
     CLIP
-} videoType;
+} video_type;
 
-typedef enum videoStatus {
+typedef enum video_status {
     NEW,
     UPCOMING,
     LIVE,
     PAST,
     MISSING
-} videoStatus;
+} video_status;
 
 typedef struct video {
     char*       id;
     char*       title;
-    videoType   type;
-    char*       topicId;
-    time_t      publishedAt;
-    time_t      availableAt;
-    videoStatus status;
+    video_type  type;
+    char*       topic_id;
+    time_t      published_at;
+    time_t      available_at;
+    video_status status;
     int         duration;
     int         songcount;
 } video;
 
-video* colodex_get_video_from_id(const char* videoId);
-video** colodex_get_video_from_channel_id(const char* channelId);
+video* colodex_get_video_from_id(const char* video_id);
+video** colodex_get_video_from_channel_id(const char* channel_id);
 void colodex_free_video(video* vid);
 void colodex_free_videos(video** vids);

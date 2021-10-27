@@ -8,7 +8,7 @@
 
 #include "utils.h"
 
-static char* mallocAndCopy(const char* input)
+static char* malloc_and_copy(const char* input)
 {
     if (input == NULL)
     {
@@ -29,17 +29,17 @@ static char* mallocAndCopy(const char* input)
     return output;
 }
 
-char* parseString(const cJSON* json, char* name)
+char* parse_string(const cJSON* json, char* name)
 {
     cJSON* elem = cJSON_GetObjectItemCaseSensitive(json, name);
     if (elem == NULL)
     {
         return NULL;
     }
-    return mallocAndCopy(elem->valuestring);
+    return malloc_and_copy(elem->valuestring);
 }
 
-int parseInt(const cJSON* json, char* name)
+int parse_int(const cJSON* json, char* name)
 {
     cJSON* elem = cJSON_GetObjectItemCaseSensitive(json, name);
     if (elem == NULL)
@@ -49,7 +49,7 @@ int parseInt(const cJSON* json, char* name)
     return elem->valueint;
 }
 
-time_t parseDateTime(const cJSON* json, char* name)
+time_t parse_date_time(const cJSON* json, char* name)
 {
     struct tm time;
     memset(&time, 0, sizeof(struct tm));
@@ -72,12 +72,12 @@ time_t parseDateTime(const cJSON* json, char* name)
 #endif
 }
 
-bool parseBool(const cJSON* json, char* name)
+bool parse_bool(const cJSON* json, char* name)
 {
     return cJSON_IsTrue(cJSON_GetObjectItemCaseSensitive(json, name));
 }
 
-char** parseStringArray(const cJSON* json, char* name)
+char** parse_string_array(const cJSON* json, char* name)
 {
     cJSON* array = cJSON_GetObjectItemCaseSensitive(json, name);
     size_t arrSize = cJSON_GetArraySize(array);
@@ -89,7 +89,7 @@ char** parseStringArray(const cJSON* json, char* name)
     cJSON* it = array->child;
     for (size_t i = 0; i < arrSize; i++)
     {
-        result[i] = mallocAndCopy(it->valuestring);
+        result[i] = malloc_and_copy(it->valuestring);
         it = it->next;
     }
     result[arrSize] = NULL; // Last element is a NULL

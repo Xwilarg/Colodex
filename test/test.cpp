@@ -37,7 +37,7 @@ TEST(ChannelTest, Basic)
     channel* ch = colodex_get_channel("UCsUj0dszADCGbF3gNrQEuSQ");
     EXPECT_EQ("UCsUj0dszADCGbF3gNrQEuSQ", std::string(ch->id));
     EXPECT_EQ("Tsukumo Sana Ch. hololive-EN", std::string(ch->name));
-    EXPECT_EQ("Tsukumo Sana", std::string(ch->englishName));
+    EXPECT_EQ("Tsukumo Sana", std::string(ch->english_name));
     EXPECT_EQ(VTUBER, ch->type);
     EXPECT_EQ("Hololive", std::string(ch->org));
     EXPECT_EQ("i English (Council)", std::string(ch->suborg));
@@ -60,9 +60,9 @@ TEST(VideoTest, Song)
     EXPECT_EQ("-AuQZrUHjhg", std::string(vid->id));
     EXPECT_EQ("[MV] Red - Calliope Mori #HololiveEnglish #HoloMyth", std::string(vid->title));
     EXPECT_EQ(STREAM, vid->type);
-    EXPECT_EQ("Original_Song", std::string(vid->topicId));
-    EXPECT_EQ(1617543014, vid->publishedAt);
-    EXPECT_EQ(1617543014, vid->availableAt);
+    EXPECT_EQ("Original_Song", std::string(vid->topic_id));
+    EXPECT_EQ(1617543014, vid->published_at);
+    EXPECT_EQ(1617543014, vid->available_at);
     EXPECT_EQ(223, vid->duration);
     EXPECT_EQ(PAST, vid->status);
     EXPECT_EQ(1, vid->songcount);
@@ -83,9 +83,9 @@ TEST(VideoTest, StreamWithUnicode)
     EXPECT_EQ("Lm1k8TI790Y", std::string(vid->id));
     EXPECT_EQ("【R6S】私にかかれば負けnあ… ーRainbow Six Siege【獅白ぼたん/ホロライブ】", std::string(vid->title));
     EXPECT_EQ(STREAM, vid->type);
-    EXPECT_EQ("Rainbow_Six", std::string(vid->topicId));
-    EXPECT_EQ(1600056002, vid->publishedAt);
-    EXPECT_EQ(1600056002, vid->availableAt);
+    EXPECT_EQ("Rainbow_Six", std::string(vid->topic_id));
+    EXPECT_EQ(1600056002, vid->published_at);
+    EXPECT_EQ(1600056002, vid->available_at);
     EXPECT_EQ(701, vid->duration);
     EXPECT_EQ(PAST, vid->status);
     EXPECT_EQ(0, vid->songcount);

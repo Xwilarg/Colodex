@@ -26,7 +26,7 @@ int main()
     colodex_init(/* YOUR HOLODEX TOKEN */); // https://holodex.net/login
 
     channel* ch = colodex_get_channel("UCsUj0dszADCGbF3gNrQEuSQ");
-    printf("The twitter ID of %s from %s is %s\n", ch->englishName, ch->org, ch->twitter);
+    printf("The twitter ID of %s from %s is %s\n", ch->english_name, ch->org, ch->twitter);
     
     // Don't forget to clean!
     colodex_free_channel(ch);
