@@ -50,10 +50,11 @@ int main()
 {
     colodex_init(/* YOUR HOLODEX TOKEN */); // https://holodex.net/login
 
-    query_video* query = new query_video();
+    query_video* query = (query_video*)malloc(sizeof(query_video));
     query->status = UPCOMING; // Only get upcoming videos
     query->limit = 5; // Only get 10 videos
     video** vids = colodex_get_videos(query, (query_video_param)(STATUS | LIMIT));
+    free(query);
 
     for (video **it = vids; *it != NULL; it++)
     {

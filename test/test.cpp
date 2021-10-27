@@ -174,10 +174,12 @@ TEST(Readme, GetUpcomingStreams)
     char* token = getToken();
     colodex_init(token);
 
-    query_video* query = new query_video();
+    query_video* query = (query_video*)malloc(sizeof(query_video));
     query->status = UPCOMING;
     query->limit = 5;
     video** vids = colodex_get_videos(query, (query_video_param)(STATUS | LIMIT));
+    free(query);
+
     for (video **it = vids; *it != NULL; it++)
     {
         EXPECT_EQ(UPCOMING, (*it)->status);
