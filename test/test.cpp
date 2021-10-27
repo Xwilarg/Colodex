@@ -148,3 +148,23 @@ TEST(VideosTest, OnlyUpcomingStreams)
 #endif
     colodex_free();
 }
+
+// These tests might be redundant with the others but we want to be sure the examples in the README run well!
+
+TEST(Readme, GetChannel)
+{
+    char* token = getToken();
+    colodex_init(token);
+
+    channel* ch = colodex_get_channel("UCsUj0dszADCGbF3gNrQEuSQ");
+    EXPECT_EQ(
+        "The twitter ID of Tsukumo Sana from Hololive is tsukumosana\n",
+        "The twitter ID of " + std::string(ch->english_name) + " from " + std::string(ch->org) + " is " + std::string(ch->twitter) + "\n"
+    );
+    colodex_free_channel(ch);
+
+#ifdef _WIN32
+    free(token); // getenv() shouldn't be freed
+#endif
+    colodex_free();
+}
