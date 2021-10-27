@@ -172,6 +172,9 @@ static char* create_url(const query_video* query, query_video_param params)
             case CLIP:
                 type = "clip";
                 break;
+            case PLACEHOLDER:
+                type = "placeholder";
+                break;
             default:
                 fprintf(stderr, "Unknown type %d\n", query->type);
                 return NULL;

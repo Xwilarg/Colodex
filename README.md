@@ -54,7 +54,7 @@ int main()
     query->status = UPCOMING; // Only get upcoming videos
     query->type = STREAM; // Don't take the clippers, only the streamers
     query->order = ASCENDING; // Order with the most recent first
-    query->limit = 5; // Only get 10 videos
+    query->limit = 5; // Only get 5 videos
     video** vids = colodex_get_videos(query, (query_video_param)(STATUS | TYPE | ORDER | LIMIT));
     free(query);
 
