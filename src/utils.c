@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-#include "utils.h"
+#include "internal/utils.h"
 
 static char* malloc_and_copy(const char* input)
 {

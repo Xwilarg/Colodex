@@ -35,5 +35,14 @@ typedef struct channel {
     char**      top_topics;
 } channel;
 
+typedef struct channel_min {
+    char*       id;
+    char*       name;
+    char*       org;
+    channel_type type;
+    char*       photo;
+    char*       english_name;
+} channel_min;
+
 channel* colodex_get_channel(const char* channel_id);
 void colodex_free_channel(channel* ch);

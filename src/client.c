@@ -1,8 +1,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <curl/curl.h>
 
-#include "client.h"
+#include "colodex/client.h"
+#include "internal/client.h"
 
 static struct curl_slist *m_auth_header = NULL;
 

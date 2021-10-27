@@ -18,8 +18,8 @@ cmake --build . --config Release
 ### Retrieve information about a channel from its ID
 ```c
 #include <stdio.h> // printf
-#include "channel.h"
-#include "client.h"
+#include "colodex/channel.h"
+#include "colodex/client.h"
 
 int main()
 {

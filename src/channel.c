@@ -1,9 +1,10 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-#include "channel.h"
-#include "client.h"
-#include "utils.h"
+#include "colodex/channel.h"
+#include "internal/client.h"
+#include "internal/utils.h"
 
 static channel_type parse_channel_type(const cJSON* json, const char* name)
 {
@@ -12,6 +13,31 @@ static channel_type parse_channel_type(const cJSON* json, const char* name)
     if (strcmp(value, "subber") == 0) return SUBBER;
     fprintf(stderr, "Unknown channel type %s\n", value);
     return -1;
+}
+
+channel_min* parse_channel_min(cJSON* json)
+{
+    channel_min* ch = malloc(sizeof(channel_min));
+    if (ch == NULL)
+    {
+        return NULL;
+    }
+    ch->id = parse_string(json, "id");
+    ch->name = parse_string(json, "name");
+    ch->org = parse_string(json, "org");
+    ch->type = parse_channel_type(json, "type");
+    ch->photo = parse_string(json, "photo");
+    ch->english_name = parse_string(json, "english_name");
+    return ch;
+}
+
+void free_channel_min(channel_min* ch)
+{
+    free(ch->id);
+    free(ch->name);
+    free(ch->org);
+    free(ch->photo);
+    free(ch->english_name);
 }
 
 channel* colodex_get_channel(const char* channel_id)

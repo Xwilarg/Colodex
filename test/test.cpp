@@ -3,9 +3,9 @@
 #include <gtest/gtest.h>
 
 extern "C" {
-    #include "channel.h"
-    #include "video.h"
-    #include "client.h"
+    #include "colodex/channel.h"
+    #include "colodex/video.h"
+    #include "colodex/client.h"
 }
 
 static char* getToken()
@@ -66,6 +66,12 @@ TEST(VideoTest, Song)
     EXPECT_EQ(223, vid->duration);
     EXPECT_EQ(PAST, vid->status);
     EXPECT_EQ(1, vid->songcount);
+    EXPECT_EQ("UCL_qhgtOy0dy1Agp8vkySQg", std::string(vid->channel_info->id));
+    EXPECT_EQ("Mori Calliope Ch. hololive-EN", std::string(vid->channel_info->name));
+    EXPECT_EQ("Hololive", std::string(vid->channel_info->org));
+    EXPECT_EQ(VTUBER, vid->channel_info->type);
+    EXPECT_EQ("https://yt3.ggpht.com/ytc/AKedOLQi2hR9UdCcWoDLz4sJYqAu9BkaYBGWex_th5ic=s800-c-k-c0x00ffffff-no-rj-mo", std::string(vid->channel_info->photo));
+    EXPECT_EQ("Mori Calliope", std::string(vid->channel_info->english_name));
     colodex_free_video(vid);
     
 #ifdef _WIN32
@@ -89,6 +95,12 @@ TEST(VideoTest, StreamWithUnicode)
     EXPECT_EQ(701, vid->duration);
     EXPECT_EQ(PAST, vid->status);
     EXPECT_EQ(0, vid->songcount);
+    EXPECT_EQ("UCUKD-uaobj9jiqB-VXt71mA", std::string(vid->channel_info->id));
+    EXPECT_EQ("Botan Ch.獅白ぼたん", std::string(vid->channel_info->name));
+    EXPECT_EQ("Hololive", std::string(vid->channel_info->org));
+    EXPECT_EQ(VTUBER, vid->channel_info->type);
+    EXPECT_EQ("https://yt3.ggpht.com/ytc/AKedOLQXr6MeUpHI0-yNZIAaGXHvBVowhCWMwGx-zXYs=s800-c-k-c0x00ffffff-no-rj", std::string(vid->channel_info->photo));
+    EXPECT_EQ("Shishiro Botan", std::string(vid->channel_info->english_name));
     colodex_free_video(vid);
 
 #ifdef _WIN32

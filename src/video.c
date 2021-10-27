@@ -1,9 +1,11 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-#include "video.h"
-#include "client.h"
-#include "utils.h"
+#include "colodex/video.h"
+#include "internal/client.h"
+#include "internal/utils.h"
+#include "internal/channel.h"
 
 static video_type parse_video_type(const cJSON* json, const char* name)
 {
@@ -44,6 +46,8 @@ static video* parse_video(cJSON* json)
     vid->duration = parse_int(json, "duration");
     vid->songcount = parse_int(json, "songcount");
     // TODO: live_tl_count
+    cJSON* chJson = cJSON_GetObjectItemCaseSensitive(json, "channel");
+    vid->channel_info = parse_channel_min(chJson);
     return vid;
 }
 

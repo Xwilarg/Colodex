@@ -2,6 +2,8 @@
 
 #include <time.h>
 
+#include "channel.h"
+
 typedef enum video_type {
     STREAM,
     CLIP
@@ -25,6 +27,7 @@ typedef struct video {
     video_status status;
     int         duration;
     int         songcount;
+    channel_min* channel_info;
 } video;
 
 video* colodex_get_video_from_id(const char* video_id);
