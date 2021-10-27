@@ -35,13 +35,13 @@ TEST(ChannelTest, Basic)
     colodex_init(token);
 
     channel* ch = colodex_get_channel("UCsUj0dszADCGbF3gNrQEuSQ");
-    EXPECT_EQ("UCsUj0dszADCGbF3gNrQEuSQ", std::string(ch->id));
-    EXPECT_EQ("Tsukumo Sana Ch. hololive-EN", std::string(ch->name));
-    EXPECT_EQ("Tsukumo Sana", std::string(ch->english_name));
+    EXPECT_STREQ("UCsUj0dszADCGbF3gNrQEuSQ", ch->id);
+    EXPECT_STREQ("Tsukumo Sana Ch. hololive-EN", ch->name);
+    EXPECT_STREQ("Tsukumo Sana", ch->english_name);
     EXPECT_EQ(VTUBER, ch->type);
-    EXPECT_EQ("Hololive", std::string(ch->org));
-    EXPECT_EQ("i English (Council)", std::string(ch->suborg));
-    EXPECT_EQ("tsukumosana", std::string(ch->twitter));
+    EXPECT_STREQ("Hololive", ch->org);
+    EXPECT_STREQ("i English (Council)", ch->suborg);
+    EXPECT_STREQ("tsukumosana", ch->twitter);
     EXPECT_FALSE(ch->inactive);
     colodex_free_channel(ch);
     
@@ -56,22 +56,22 @@ TEST(VideoTest, Song)
     char* token = getToken();
     colodex_init(token);
 
-    video* vid = colodex_get_video_from_id("-AuQZrUHjhg", NULL, NONE);
-    EXPECT_EQ("-AuQZrUHjhg", std::string(vid->id));
-    EXPECT_EQ("[MV] Red - Calliope Mori #HololiveEnglish #HoloMyth", std::string(vid->title));
+    video* vid = colodex_get_video_from_id("-AuQZrUHjhg");
+    EXPECT_STREQ("-AuQZrUHjhg", vid->id);
+    EXPECT_STREQ("[MV] Red - Calliope Mori #HololiveEnglish #HoloMyth", vid->title);
     EXPECT_EQ(STREAM, vid->type);
-    EXPECT_EQ("Original_Song", std::string(vid->topic_id));
+    EXPECT_STREQ("Original_Song", vid->topic_id);
     EXPECT_EQ(1617543014, vid->published_at);
     EXPECT_EQ(1617543014, vid->available_at);
     EXPECT_EQ(223, vid->duration);
     EXPECT_EQ(PAST, vid->status);
     EXPECT_EQ(1, vid->songcount);
-    EXPECT_EQ("UCL_qhgtOy0dy1Agp8vkySQg", std::string(vid->channel_info->id));
-    EXPECT_EQ("Mori Calliope Ch. hololive-EN", std::string(vid->channel_info->name));
-    EXPECT_EQ("Hololive", std::string(vid->channel_info->org));
+    EXPECT_STREQ("UCL_qhgtOy0dy1Agp8vkySQg", vid->channel_info->id);
+    EXPECT_STREQ("Mori Calliope Ch. hololive-EN", vid->channel_info->name);
+    EXPECT_STREQ("Hololive", vid->channel_info->org);
     EXPECT_EQ(VTUBER, vid->channel_info->type);
-    EXPECT_EQ("https://yt3.ggpht.com/ytc/AKedOLQi2hR9UdCcWoDLz4sJYqAu9BkaYBGWex_th5ic=s800-c-k-c0x00ffffff-no-rj-mo", std::string(vid->channel_info->photo));
-    EXPECT_EQ("Mori Calliope", std::string(vid->channel_info->english_name));
+    EXPECT_STREQ("https://yt3.ggpht.com/ytc/AKedOLQi2hR9UdCcWoDLz4sJYqAu9BkaYBGWex_th5ic=s800-c-k-c0x00ffffff-no-rj-mo", vid->channel_info->photo);
+    EXPECT_STREQ("Mori Calliope", vid->channel_info->english_name);
     colodex_free_video(vid);
     
 #ifdef _WIN32
@@ -85,23 +85,63 @@ TEST(VideoTest, StreamWithUnicode)
     char* token = getToken();
     colodex_init(token);
 
-    video* vid = colodex_get_video_from_id("Lm1k8TI790Y", NULL, NONE);
-    EXPECT_EQ("Lm1k8TI790Y", std::string(vid->id));
-    EXPECT_EQ("【R6S】私にかかれば負けnあ… ーRainbow Six Siege【獅白ぼたん/ホロライブ】", std::string(vid->title));
+    video* vid = colodex_get_video_from_id("Lm1k8TI790Y");
+    EXPECT_STREQ("Lm1k8TI790Y", vid->id);
+    EXPECT_STREQ("【R6S】私にかかれば負けnあ… ーRainbow Six Siege【獅白ぼたん/ホロライブ】", vid->title);
     EXPECT_EQ(STREAM, vid->type);
-    EXPECT_EQ("Rainbow_Six", std::string(vid->topic_id));
+    EXPECT_STREQ("Rainbow_Six", vid->topic_id);
     EXPECT_EQ(1600056002, vid->published_at);
     EXPECT_EQ(1600056002, vid->available_at);
     EXPECT_EQ(701, vid->duration);
     EXPECT_EQ(PAST, vid->status);
     EXPECT_EQ(0, vid->songcount);
-    EXPECT_EQ("UCUKD-uaobj9jiqB-VXt71mA", std::string(vid->channel_info->id));
-    EXPECT_EQ("Botan Ch.獅白ぼたん", std::string(vid->channel_info->name));
-    EXPECT_EQ("Hololive", std::string(vid->channel_info->org));
+    EXPECT_STREQ("UCUKD-uaobj9jiqB-VXt71mA", vid->channel_info->id);
+    EXPECT_STREQ("Botan Ch.獅白ぼたん", vid->channel_info->name);
+    EXPECT_STREQ("Hololive", vid->channel_info->org);
     EXPECT_EQ(VTUBER, vid->channel_info->type);
-    EXPECT_EQ("https://yt3.ggpht.com/ytc/AKedOLQXr6MeUpHI0-yNZIAaGXHvBVowhCWMwGx-zXYs=s800-c-k-c0x00ffffff-no-rj", std::string(vid->channel_info->photo));
-    EXPECT_EQ("Shishiro Botan", std::string(vid->channel_info->english_name));
+    EXPECT_STREQ("https://yt3.ggpht.com/ytc/AKedOLQXr6MeUpHI0-yNZIAaGXHvBVowhCWMwGx-zXYs=s800-c-k-c0x00ffffff-no-rj", vid->channel_info->photo);
+    EXPECT_STREQ("Shishiro Botan", vid->channel_info->english_name);
     colodex_free_video(vid);
+
+#ifdef _WIN32
+    free(token);
+#endif
+    colodex_free();
+}
+
+TEST(VideoTest, StreamWithInvalidId)
+{
+    char* token = getToken();
+    colodex_init(token);
+
+    video* vid = colodex_get_video_from_id("0000000000000000");
+    EXPECT_EQ(nullptr, vid);
+
+#ifdef _WIN32
+    free(token);
+#endif
+    colodex_free();
+}
+
+
+TEST(VideosTest, OnlyUpcomingStreams)
+{
+    char* token = getToken();
+    colodex_init(token);
+
+    query_video* query = new query_video();
+    query->status = UPCOMING;
+    video** vids = colodex_get_video_from_channel_id("UCLhUvJ_wO9hOvv_yYENu4fQ", query, STATUS);
+    delete query;
+
+    int index = 0;
+    video* curr = vids[0];
+    while (curr != NULL)
+    {
+        EXPECT_EQ(UPCOMING, curr->status);
+        curr = vids[++index];
+    }
+    colodex_free_videos(vids);
 
 #ifdef _WIN32
     free(token);

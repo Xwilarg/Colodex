@@ -51,6 +51,9 @@ static video* parse_video(cJSON* json)
     return vid;
 }
 
+// Appends "append" and "appendArg" to "text"
+// If text, will malloc it, else will realloc it
+// Used to create an URL with arguments
 static char* malloc_or_append(char* text, const char* append, const char* appendArg)
 {
     size_t size;
@@ -73,6 +76,7 @@ static char* malloc_or_append(char* text, const char* append, const char* append
     return text;
 }
 
+// Create parameter part of URL given query info
 static char* create_url(const query_video* query, query_video_param params)
 {
     if (query == NULL)
@@ -82,7 +86,7 @@ static char* create_url(const query_video* query, query_video_param params)
         return empty;
     }
     char* url = NULL;
-    if ((params & MAX_UPCOMING_HOURS) != 0)
+    if ((params & MAX_UPCOMING_HOURS) != 0) // Remove video that come further than the giving hour
     {
         char buffer[10];
 #ifdef _WIN32
@@ -92,25 +96,54 @@ static char* create_url(const query_video* query, query_video_param params)
 #endif
         url = malloc_or_append(url, "&max_upcoming_hours=", buffer);
     }
+    if ((params & STATUS) != 0) // Filter by video status
+    {
+        char* status;
+        switch (query->status)
+        {
+            case NEW:
+                status = "new";
+                break;
+
+            case UPCOMING:
+                status = "upcoming";
+                break;
+
+            case LIVE:
+                status = "live";
+                break;
+
+            case PAST:
+                status = "past";
+                break;
+
+            case MISSING:
+                status = "missing";
+                break;
+
+            default:
+                fprintf(stderr, "Unknown video type %d\n", query->status);
+                return NULL;
+        }
+        url = malloc_or_append(url, "&status=", status);
+    }
     return url;
 }
 
-video* colodex_get_video_from_id(const char* video_id, const query_video* query, query_video_param params)
+video* colodex_get_video_from_id(const char* video_id)
 {
     char* baseUrl = "https://holodex.net/api/v2/videos?id=";
-    char* args = create_url(query, params);
-    size_t size = strlen(baseUrl) + strlen(video_id) + strlen(args) + 1;
+    size_t size = strlen(baseUrl) + strlen(video_id) + 1;
     char* url = malloc(size);
     if (url == NULL)
     {
         return NULL;
     }
-    snprintf(url, size, "%s%s%s", baseUrl, video_id, args);
+    snprintf(url, size, "%s%s", baseUrl, video_id);
     char* resp = request(url);
     cJSON* json = cJSON_Parse(resp);
     free(resp);
     free(url);
-    free(args);
 
     size_t arrSize = cJSON_GetArraySize(json);
 

@@ -32,14 +32,16 @@ typedef struct video {
 
 typedef struct query_video {
     int max_upcoming_hours;
+    video_status status;
 } query_video;
 
 typedef enum query_video_param {
     NONE = 0,
-    MAX_UPCOMING_HOURS = 1
+    MAX_UPCOMING_HOURS = 1,
+    STATUS = 2
 } query_video_param;
 
-video* colodex_get_video_from_id(const char* video_id, const query_video* query, query_video_param params);
+video* colodex_get_video_from_id(const char* video_id);
 video** colodex_get_video_from_channel_id(const char* channel_id, const query_video* query, query_video_param params);
 void colodex_free_video(video* vid);
 void colodex_free_videos(video** vids);
