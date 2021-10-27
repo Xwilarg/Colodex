@@ -43,7 +43,7 @@ The twitter ID of Tsukumo Sana from Hololive is tsukumosana
 #include <stdio.h> // printf
 #include <time.h> // localtime and asctime
 #include <string.h> // strtok
-#include "colodex/channel.h"
+#include "colodex/video.h"
 #include "colodex/client.h"
 
 int main()
