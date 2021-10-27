@@ -42,7 +42,7 @@ channel* colodex_get_channel(const char* channel_id)
     ch->description = parse_string(json, "description");
     ch->photo = parse_string(json, "photo");
     ch->thumbnail = parse_string(json, "thumbnail");
-    ch->banner = parse_stringparse_string(json, "banner");
+    ch->banner = parse_string(json, "banner");
     ch->org = parse_string(json, "org");
     ch->suborg = parse_string(json, "suborg");
     ch->lang = parse_string(json, "lang");

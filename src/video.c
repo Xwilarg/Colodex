@@ -14,7 +14,7 @@ static video_type parse_video_type(const cJSON* json, const char* name)
     return -1;
 }
 
-static video_status parseVideoStatus(const cJSON* json, const char* name)
+static video_status parse_video_status(const cJSON* json, const char* name)
 {
     char* value = cJSON_GetObjectItemCaseSensitive(json, name)->valuestring;
     if (strcmp(value, "new") == 0) return NEW;
@@ -41,7 +41,7 @@ static video* parse_video(cJSON* json)
     vid->published_at = parse_date_time(json, "published_at");
     vid->available_at = parse_date_time(json, "available_at");
     vid->status = parse_video_status(json, "status");
-    vid->duration = parseint(json, "duration");
+    vid->duration = parse_int(json, "duration");
     vid->songcount = parse_int(json, "songcount");
     // TODO: live_tl_count
     return vid;
@@ -76,7 +76,7 @@ video* colodex_get_video_from_id(const char* video_id)
         return NULL;
     }
 
-    return parseVideo(json->child);
+    return parse_video(json->child);
 }
 
 video** colodex_get_video_from_channel_id(const char* channel_id)
@@ -104,7 +104,7 @@ video** colodex_get_video_from_channel_id(const char* channel_id)
     cJSON* it = json->child;
     for (size_t i = 0; i < arrSize; i++)
     {
-        vid[i] = parseVideo(it);
+        vid[i] = parse_video(it);
         it = it->next;
     }
     vid[arrSize] = NULL;
