@@ -56,7 +56,7 @@ TEST(VideoTest, Song)
     char* token = getToken();
     colodex_init(token);
 
-    video* vid = colodex_get_video_from_id("-AuQZrUHjhg");
+    video* vid = colodex_get_video_from_id("-AuQZrUHjhg", NULL, NONE);
     EXPECT_EQ("-AuQZrUHjhg", std::string(vid->id));
     EXPECT_EQ("[MV] Red - Calliope Mori #HololiveEnglish #HoloMyth", std::string(vid->title));
     EXPECT_EQ(STREAM, vid->type);
@@ -85,7 +85,7 @@ TEST(VideoTest, StreamWithUnicode)
     char* token = getToken();
     colodex_init(token);
 
-    video* vid = colodex_get_video_from_id("Lm1k8TI790Y");
+    video* vid = colodex_get_video_from_id("Lm1k8TI790Y", NULL, NONE);
     EXPECT_EQ("Lm1k8TI790Y", std::string(vid->id));
     EXPECT_EQ("【R6S】私にかかれば負けnあ… ーRainbow Six Siege【獅白ぼたん/ホロライブ】", std::string(vid->title));
     EXPECT_EQ(STREAM, vid->type);

@@ -51,20 +51,58 @@ static video* parse_video(cJSON* json)
     return vid;
 }
 
-video* colodex_get_video_from_id(const char* video_id)
+static char* malloc_or_append(char* text, const char* append, const char* appendArg)
+{
+    size_t size = strlen(text) + strlen(append) + strlen(appendArg) + 1;
+    if (text == NULL)
+    {
+        text = malloc(strlen(text) + strlen(append) + 1);
+        snprintf(text, size, "%s%s%s", text, append, appendArg);
+        return text;
+    }
+    text = realloc(text, size);
+#ifdef _WIN32
+    strcat_s(text, size, append);
+    strcat_s(text, size, appendArg);
+#else
+    strcat(text, append);
+    strcat(text, appendArg);
+#endif
+    return text;
+}
+
+static char* create_url(const query_video* query, query_video_param params)
+{
+    if (query == NULL)
+    {
+        return NULL;
+    }
+    char* url = NULL;
+    if ((params & MAX_UPCOMING_HOURS) != 0)
+    {
+        char* value;
+        sprintf(value, "%d", query->max_upcoming_hours); // TODO: Should use sprintf_s on Windows
+        url = malloc_or_append(url, "&max_upcoming_hours=", value);
+    }
+    return url;
+}
+
+video* colodex_get_video_from_id(const char* video_id, const query_video* query, query_video_param params)
 {
     char* baseUrl = "https://holodex.net/api/v2/videos?id=";
-    size_t size = strlen(baseUrl) + strlen(video_id) + 1;
+    char* args = create_url(query, params);
+    size_t size = strlen(baseUrl) + strlen(video_id) + strlen(args) + 1;
     char* url = malloc(size);
     if (url == NULL)
     {
         return NULL;
     }
-    snprintf(url, size, "%s%s", baseUrl, video_id);
+    snprintf(url, size, "%s%s%s", baseUrl, video_id, args);
     char* resp = request(url);
     cJSON* json = cJSON_Parse(resp);
     free(resp);
     free(url);
+    free(args);
 
     size_t arrSize = cJSON_GetArraySize(json);
 
@@ -83,20 +121,22 @@ video* colodex_get_video_from_id(const char* video_id)
     return parse_video(json->child);
 }
 
-video** colodex_get_video_from_channel_id(const char* channel_id)
+video** colodex_get_video_from_channel_id(const char* channel_id, const query_video* query, query_video_param params)
 {
     char* baseUrl = "https://holodex.net/api/v2/videos?channel_id=";
-    size_t size = strlen(baseUrl) + strlen(channel_id) + 1;
+    char* args = create_url(query, params);
+    size_t size = strlen(baseUrl) + strlen(channel_id) + strlen(args) + 1;
     char* url = malloc(size);
     if (url == NULL)
     {
         return NULL;
     }
-    snprintf(url, size, "%s%s", baseUrl, channel_id);
+    snprintf(url, size, "%s%s%s", baseUrl, channel_id, args);
     char* resp = request(url);
     cJSON* json = cJSON_Parse(resp);
     free(resp);
     free(url);
+    free(args);
 
     size_t arrSize = cJSON_GetArraySize(json);
     video** vid;

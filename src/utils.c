@@ -21,11 +21,11 @@ static char* malloc_and_copy(const char* input)
     {
         return NULL;
     }
-    #ifdef _WIN32
+#ifdef _WIN32
         strcpy_s(output, size, input);
-    #else
+#else
         strcpy(output, input);
-    #endif
+#endif
     return output;
 }
 
