@@ -80,9 +80,13 @@ static char* create_url(const query_video* query, query_video_param params)
     char* url = NULL;
     if ((params & MAX_UPCOMING_HOURS) != 0)
     {
-        char* value;
-        sprintf(value, "%d", query->max_upcoming_hours); // TODO: Should use sprintf_s on Windows
-        url = malloc_or_append(url, "&max_upcoming_hours=", value);
+        char buffer[10];
+#ifdef _WIN32
+        sprintf_s(buffer, 10, "%d", query->max_upcoming_hours);
+#else
+        sprintf(buffer, "%d", query->max_upcoming_hours);
+#endif
+        url = malloc_or_append(url, "&max_upcoming_hours=", buffer);
     }
     return url;
 }
